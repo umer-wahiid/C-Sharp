@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>jQuery Form</h1>
+    <form id="myForm">
+        <div class="row">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div class="row">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>    
+        <div class="row">
+            <input type="submit" value="Submit">
+        </div>    
+    </form>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+<Script>
+$(document).ready(function() {
+    $('#myForm').validate({
+        rules: {
+            name: {
+                required: true,
+                minlength: 3
+            },
+            email: {
+                required: true,
+                email: true
+            }
+        },
+        messages: {
+            name: {
+                required: "Please enter your name",
+                minlength: "Name Should Contain 3 Alphabets Min"    
+            },
+            email: {
+                required: "Please enter your email",
+                email: "Please enter a valid email address"
+            }
+        }
+    });
+});
+$(document).ready(function() {
+    $('#myForm').validate({
+        // validation rules and messages...
+
+        submitHandler: function(form) {
+            // Form is valid, allow submission
+            form.submit();
+        }
+    });
+});
+</Script>
+</html>

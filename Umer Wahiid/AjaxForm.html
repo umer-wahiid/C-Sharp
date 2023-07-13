@@ -1,0 +1,129 @@
+<form id="myForm" action="https://example.com/api/endpoint" method="POST">
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <button type="submit">Submit</button>
+  </form>
+
+
+<script>
+  $(document).ready(function() {
+    $("#myForm").submit(function(event) {
+      event.preventDefault(); // Prevent the form from submitting normally
+  
+      var formData = $(this).serialize(); // Serialize the form data
+  
+      $.ajax({
+        url: $(this).attr("action"),
+        type: $(this).attr("method"),
+        data: formData,
+        success: function(response) {
+          // Handle the response
+          console.log("Form Submission Successful");
+          console.log(response);
+        },
+        error: function(xhr, status, error) {
+          // Handle the error
+          console.log("Form Submission Error");
+          console.log(error);
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+
+$(document).ready(function() {
+    // Perform the AJAX request when a button is clicked
+    $('#fetchButton').click(function() {
+      // Make the AJAX request using fetch API
+      fetch('@Url.Action("GetData", "YourController")')
+        .then(response => response.json())
+        .then(data => {
+          // Handle the received data
+          console.log(data);
+          // Process and display the data on the page as needed
+        })
+        .catch(error => {
+          // Handle any errors that occurred during the request
+          console.log(error);
+        });
+    });
+  });
+
+
+
+
+
+
+  $(document).ready(function() {
+  // Perform the AJAX request when the page loads
+  fetch('@Url.Action("GetData", "YourController")')
+    .then(response => response.json())
+    .then(data => {
+      // Handle the received data
+      console.log(data);
+      // Process and display the data on the page as needed
+    })
+    .catch(error => {
+      // Handle any errors that occurred during the request
+      console.log(error);
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </script>
+
+  public IActionResult GetData()
+  {
+      // Retrieve the data from your data source or perform any necessary operations
+      var data = ... // Retrieve or generate the data
+  
+      // Return the data as JSON
+      return Json(data);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

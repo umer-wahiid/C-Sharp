@@ -1,0 +1,15 @@
+$(document).ready(function() {
+  // Define an array of table names
+  var tableNames = [
+    "Table1",
+    "Table2",
+    "Table3",
+    "Table4",
+    // Add more table names as needed
+  ];
+
+  // Initialize the Autocomplete widget
+  $('#myInput').autocomplete({
+    source: tableNames
+  });
+});

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Search Records and Show Found Rows in Table</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <!-- Your HTML content -->
+  <input type="text" id="searchInput" placeholder="Search...">
+  <table id="myTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>City</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>John Doe</td>
+        <td>30</td>
+        <td>New York</td>
+      </tr>
+      <tr>
+        <td>Jane Smith</td>
+        <td>25</td>
+        <td>London</td>
+      </tr>
+      <tr>
+        <td>Mark Johnson</td>
+        <td>35</td>
+        <td>Tokyo</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#searchInput').on('keyup', function() {
+        var searchTerm = $(this).val().toLowerCase();
+        
+        $('#myTable tbody tr').each(function() {
+          var rowData = $(this).find('td').text().toLowerCase();
+          
+          if (rowData.indexOf(searchTerm) !== -1) {
+            $(this).show();
+          } 
+          else {
+            $(this).hide();
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

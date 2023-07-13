@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>HTML Screenshot</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+
+</head>
+<body>
+  <div id="container">
+    <div class="box" id="screenshot-element">
+      <h1>Hello, World!</h1>
+      <p>The Content You Want to Print.</p>
+    </div>
+
+    <div class="box" id="box1">Box 1</div>
+    <div class="box" id="box2">Box 2</div>
+    <div class="box" id="box3">Box 3</div>
+  </div>
+
+  <button id="capture-btn">Print</button>
+
+  <script>
+    $(document).ready(function() {
+  $('#capture-btn').click(function() {
+    var targetElement = $('#screenshot-element')[0];
+
+    html2canvas(targetElement).then(function(canvas) {
+      // Convert canvas to image data URL
+      var imageDataURL = canvas.toDataURL("image/png");
+
+      // Generate filename with datetime
+      var currentDateTime = new Date().toISOString();
+      //var currentDateTime = new Date().toISOString().replace(/[-:.]/g, "");
+      var filename = "screenshot_" + currentDateTime + ".png";
+
+      // Trigger file download
+      var downloadLink = document.createElement("a");
+      downloadLink.href = imageDataURL;
+      downloadLink.download = filename;
+      downloadLink.click();
+    });
+  });
+});
+
+
+$(document).ready(function() {
+  // Move #box3 to the beginning of the container
+  $("#container").prepend($("#box3"));
+
+  // Move #box2 after #box1
+  $("#box2").after($("#screenshot-element"));
+});
+
+
+    </script>
+</html>

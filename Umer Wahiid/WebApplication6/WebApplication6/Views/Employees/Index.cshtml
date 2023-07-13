@@ -1,0 +1,62 @@
+﻿@model IEnumerable<WebApplication6.Models.Employee>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<button id="getDataButton">Get Employees</button>
+<table id="customerTable" class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EmpName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContNum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Salary)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+@section Scripts {
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            //$("#getDataButton").click(function () {
+                $.get("/Employees/GetEmployee", function (data) {
+                    console.log(data);
+
+                    var tbody = $("#customerTable tbody");
+                    tbody.empty();
+
+                    $.each(data, function (index, item) {
+                        console.log(item);
+                        var row = $("<tr></tr>");
+                        $("<td></td>").text(item.empName).appendTo(row);
+                        $("<td></td>").text(item.email).appendTo(row);
+                        $("<td></td>").text(item.contNum).appendTo(row);
+                        $("<td></td>").text(item.salary).appendTo(row);
+                        $("<td></td>").html('<a href="/Employees/Edit/' + item.employeeId + '">Edit</a> | <a href="/Employees/Details/' + item.employeeId + '">Details</a> | <a href="/Employees/Delete/' + item.employeeId + '">Delete</a>').appendTo(row);
+                        //$("<td></td>").html("<a asp-action='Edit' asp-route-id='" + item.employeeId + "'>Edit</a> | <a asp-action='Details' asp-route-id='" + item.EmployeeId + "'>Details</a> | <a asp-action='Delete' asp-route-id='" + item.EmployeeId + "'>Delete</a>").appendTo(row);
+                        row.appendTo(tbody);
+                    });
+                });
+            //});
+        });
+    </script>
+}

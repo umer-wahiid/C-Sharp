@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Parent Page</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $("#openPopupBtn").click(function() {
+        // Open the popup
+        var popup = window.open("popup.html", "Popup", "width=400,height=200");
+
+        // Receive message from popup
+        window.addEventListener("message", function(event) {
+          // Check if the message is from the popup
+          if (event.source === popup) {
+            // Set the value in the parent textbox
+            $("#textbox").val(event.data);
+
+            // Close the popup
+            popup.close();
+          }
+        });
+      });
+    });
+  </script>
+</head>
+<body>
+  <input type="text" id="textbox" />
+  <button id="openPopupBtn">Open Popup</button>
+</body>
+</html>

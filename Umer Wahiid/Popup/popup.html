@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Popup</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $("#sendValueBtn").click(function() {
+        // Get the value from the popup textbox
+        var value = $("#popupTextbox").val();
+
+        // Send the value to the parent page
+        window.opener.postMessage(value, "*");
+      });
+    });
+  </script>
+</head>
+<body>
+  <input type="text" id="popupTextbox" />
+  <button id="sendValueBtn">Send Value</button>
+</body>
+</html>

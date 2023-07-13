@@ -1,0 +1,68 @@
+﻿@model IEnumerable<WebApplication5.Models.Employee>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<!-- HTML elements -->
+<select id="dropdown">
+    <option value="all">All</option>
+    <option value="individual">Individual</option>
+</select>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EmpName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContNum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Salary)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmpName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContNum)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Salary)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.EmployeeId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.EmployeeId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.EmployeeId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div id="popup-form" style="display: none;">
+    <!-- Popup form content goes here -->
+    <input type="text" id="employee-name" placeholder="Enter employee name">
+    <button id="submit-button">Submit</button>
+</div>

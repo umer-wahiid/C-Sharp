@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chart Bar Popup</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
+  <script src="script.js"></script>
+  <style>
+    .chart-container {
+      position: relative;
+      width: 400px;
+      height: 300px;
+    }
+    #popup {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      height: 300px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="chart-container">
+    <canvas id="chart"></canvas>
+  </div>
+  
+  <div id="popup">
+    <h3>Last 6 Months Working Hours</h3>
+    <canvas id="hours-chart"></canvas>
+  </div>
+
+
+  <script>
+    
+$(document).ready(function() {
+  // Sample data (replace with your own data)
+  var employeeWorkingHours = [
+    { month: "January", hours: 160 },
+    { month: "February", hours: 180 },
+    { month: "March", hours: 170 },
+    { month: "April", hours: 190 },
+    { month: "May", hours: 175 },
+    { month: "June", hours: 200 },
+    { month: "July", hours: 185 },
+    { month: "August", hours: 195 },
+    { month: "September", hours: 180 },
+    { month: "October", hours: 190 },
+    { month: "November", hours: 170 },
+    { month: "December", hours: 160 }
+  ];
+
+  // Generate chart for employee working hours
+  function generateChart() {
+    var labels = [];
+    var data = [];
+
+    // Get last 6 months working hours
+    var currentDate = new Date();
+    var currentMonth = currentDate.getMonth();
+    var lastSixMonths = [];
+
+    for (var i = 5; i >= 0; i--) {
+      var index = (currentMonth - i + 12) % 12;
+      lastSixMonths.push(employeeWorkingHours[index]);
+    }
+
+    lastSixMonths.forEach(function(item) {
+      labels.push(item.month);
+      data.push(item.hours);
+    });
+
+    // Create and configure the chart
+    var ctx = document.getElementById("chart").getContext("2d");
+    var chart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "Working Hours",
+          data: data,
+          backgroundColor: "rgba(75, 192, 192, 0.6)",
+          borderColor: "rgba(75, 192, 192, 1)",
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 250
+          }
+        }
+      }
+    });
+
+    // Show popup on chart bar click
+    $("#chart").on("click", function(e) {
+      var activePoint = chart.getElementsAtEventForMode(e, "nearest", { intersect: true });
+      var monthIndex = activePoint[0].index;
+      var month = labels[monthIndex];
+      var hours = data[monthIndex];
+
+      $("#popup").show();
+
+      // Generate chart for the last 6 months working hours
+      var hoursCtx = document.getElementById("hours-chart").getContext("2d");
+      var hoursChart = new Chart(hoursCtx, {
+        type: "pie",
+        data: {
+          labels: labels,
+          datasets: [{
+            label: "Working Hours",
+            data: data,
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.6)",
+              "rgba(54, 162, 235, 0.6)",
+              "rgba(255, 206, 86, 0.6)",
+              "rgba(75, 192, 192, 0.6)",
+              "rgba(153, 102, 255, 0.6)",
+              "rgba(255, 159, 64, 0.6)"
+            ],
+            borderColor: [
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(75, 192, 192, 1)",
+              "rgba(153, 102, 255, 1)",
+              "rgba(255, 159, 64, 1)"
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true
+        }
+      });
+    });
+
+    // Close popup on click outside the popup
+    $(document).on("click", function(e) {
+      if (!$(e.target).closest("#popup").length && !$(e.target).is("#chart")) {
+        $("#popup").hide();
+      }
+    });
+  }
+
+  // Generate the chart
+  generateChart();
+});
+  </script>
+</body>
+</html>

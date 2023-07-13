@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dynamic HTML Table with Column Movement</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // Define the column order and visibility options
+      var columnOptions = [
+        { name: "Name", visible: true },
+        { name: "Age", visible: true },
+        { name: "Department", visible: true },
+        { name: "Salary", visible: true },
+      ];
+
+      // Function to create the HTML table
+      function createTable() {
+        var table = $("<table>").addClass("employee-table");
+        var thead = $("<thead>").appendTo(table);
+        var tbody = $("<tbody>").appendTo(table);
+        var trHead = $("<tr>").appendTo(thead);
+        var trBody;
+
+        // Add the table headers based on column options
+        columnOptions.forEach(function(column) {
+          if (column.visible) {
+            $("<th>").text(column.name).appendTo(trHead);
+          }
+        });
+
+        // Add the table rows and cells based on column options
+        employees.forEach(function(employee) {
+          trBody = $("<tr>").appendTo(tbody);
+          columnOptions.forEach(function(column) {
+            if (column.visible) {
+              $("<td>").text(employee[column.name]).appendTo(trBody);
+            }
+          });
+        });
+
+        // Append the table to the container
+        $("#tableContainer").empty().append(table);
+      }
+
+      // Initial table creation
+      createTable();
+
+      // Handle column movement using jQuery UI sortable
+      $("#columnList").sortable({
+        update: function(event, ui) {
+          // Get the updated column order
+          var updatedOrder = $(this).sortable("toArray");
+
+          // Update columnOptions based on the new order
+          columnOptions = columnOptions.sort(function(a, b) {
+            return updatedOrder.indexOf(a.name) - updatedOrder.indexOf(b.name);
+          });
+
+          // Recreate the table with the updated column order
+          createTable();
+        }
+      });
+
+      // Handle column visibility changes
+      $("#columnList").on("change", "input[type='checkbox']", function() {
+        var columnName = $(this).data("column");
+        var visible = $(this).is(":checked");
+
+        // Update the column visibility in columnOptions
+        columnOptions.find(function(column) {
+          return column.name === columnName;
+        }).visible = visible;
+
+        // Recreate the table with the updated column visibility
+        createTable();
+      });
+    });
+
+    // Sample data (replace with your own employee data)
+    var employees = [
+      { Name: "John Doe", Age: 30, Department: "Sales", Salary: 50000 },
+      { Name: "Jane Smith", Age: 35, Department: "Marketing", Salary: 60000 },
+      { Name: "Robert Johnson", Age: 40, Department: "Finance", Salary: 70000 },
+    ];
+  </script>
+  <style>
+    #columnList {
+      list-style-type: none;
+      padding: 0;
+    }
+    #columnList li {
+      margin: 5px;
+    }
+    .employee-table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    .employee-table th,
+    .employee-table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <h1>Dynamic HTML Table with Column Movement</h1>
+  
+  <div>
+    <h3>Column Options</h3>
+    <ul id="columnList">
+      <li>
+        <label>
+          <input type="checkbox" data-column="Name" checked> Name
+        </label>
+      </li>
+      <li>
+        <label>
+          <input type="checkbox" data-column="Age" checked> Age
+        </label>
+      </li>
+      <li>
+        <label>
+          <input type="checkbox" data-column="Department" checked> Department
+        </label>
+      </li>
+      <li>
+        <label>
+          <input type="checkbox" data-column="Salary" checked> Salary
+        </label>
+      </li>
+    </ul>
+  </div>
+  
+  <div id="tableContainer">
+    <!-- Table will be dynamically created here -->
+  </div>
+</body>
+</html>

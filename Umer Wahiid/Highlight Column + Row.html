@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Highlight Clicked Row in Table</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    tr.highlighted {
+      background-color: yellow;
+    }
+
+    td.highlighted {
+      background-color: yellow;
+    }
+  </style>
+</head>
+<body>
+  <h1>Highlight Clicked Row in Table</h1>
+  
+  <table id="grid">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Age</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>John Doe</td>
+        <td>30</td>
+      </tr>
+      <tr>
+        <td>Jane Smith</td>
+        <td>25</td>
+      </tr>
+      <tr>
+        <td>Mark Johnson</td>
+        <td>35</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <script>
+    $(document).ready(function() {
+      $("#grid tbody tr").click(function() {
+        // Remove the highlight class from all rows
+        $("#grid tbody tr").removeClass("highlighted");
+
+        // Add the highlight class to the clicked row
+        $(this).addClass("highlighted");
+      });
+    });
+
+
+
+
+    $(document).ready(function() {
+      var previousColumnIndex = null;
+
+      $("#grid th").click(function() {
+        var columnIndex = $(this).index() + 1; // Add 1 to exclude the row index column
+
+        // Unhighlight the previous column
+        if (previousColumnIndex !== null) {
+          $("#grid td:nth-child(" + previousColumnIndex + ")").removeClass("highlighted");
+        }
+
+        // Add the highlight class to the clicked column's cells
+        $("#grid td:nth-child(" + columnIndex + ")").addClass("highlighted");
+
+        // Update the previous column index
+        previousColumnIndex = columnIndex;
+      });
+    });
+  </script>
+</body>
+</html>

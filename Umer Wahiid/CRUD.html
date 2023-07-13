@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CRUD Operations in Grid View</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="script.js"></script>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .edit-btn, .delete-btn {
+      cursor: pointer;
+      color: blue;
+      text-decoration: underline;
+    }
+    .add-form {
+      margin-bottom: 10px;
+    }
+    
+    tr.highlighted {
+      background-color: yellow;
+    }
+  </style>
+</head>
+<body>
+  <h1>CRUD Operations in Grid View</h1>
+  
+  <div class="add-form">
+    <input type="text" id="name-input" placeholder="Name">
+    <input type="text" id="age-input" placeholder="Age">
+    <button id="add-btn">Add</button>
+  </div>
+  
+  <table id="grid">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Table rows will be dynamically created here -->
+    </tbody>
+  </table>
+
+  <script>
+    $(document).ready(function() {
+          $("#grid tbody tr").click(function() {
+            // Remove the highlight class from all rows
+            $("#grid tbody tr").removeClass("highlighted");
+    
+            // Add the highlight class to the clicked row
+            $(this).addClass("highlighted");
+          });
+        });
+
+
+
+    $(document).ready(function() {
+  var gridData = []; // Array to store grid data
+
+  // Function to generate a row in the grid view
+  function generateRow(data) {
+    var row = $("<tr>");
+    row.append($("<td>").text(data.name));
+    row.append($("<td>").text(data.age));
+
+    var actions = $("<td>");
+    actions.append($("<span>").addClass("edit-btn").text("Edit"));
+    actions.append(" | ");
+    actions.append($("<span>").addClass("delete-btn").text("Delete"));
+
+    row.append(actions);
+
+    return row;
+  }
+
+  // Function to refresh the grid view
+  function refreshGrid() {
+    var grid = $("#grid");
+    grid.find("tbody").empty(); // Clear existing rows
+
+    // Generate rows for each data item
+    for (var i = 0; i < gridData.length; i++) {
+      var rowData = gridData[i];
+      var row = generateRow(rowData);
+      grid.find("tbody").append(row);
+    }
+  }
+
+  // Add button click event
+  $("#add-btn").click(function() {
+    var name = $("#name-input").val();
+    var age = $("#age-input").val();
+
+    // Add data to the grid data array
+    gridData.push({
+      name: name,
+      age: age
+    });
+
+    // Refresh the grid view
+    refreshGrid();
+
+    // Clear input fields
+    $("#name-input").val("");
+    $("#age-input").val("");
+  });
+
+  // Edit button click event
+  $(document).on("click", ".edit-btn", function() {
+    var row = $(this).closest("tr");
+    var name = row.find("td:eq(0)").text();
+    var age = row.find("td:eq(1)").text();
+
+    // Populate the input fields with the row data
+    $("#name-input").val(name);
+    $("#age-input").val(age);
+
+    // Remove the row from the grid data array
+    gridData.splice(row.index(), 1);
+
+    // Refresh the grid view
+    refreshGrid();
+  });
+
+  // Delete button click event
+  $(document).on("click", ".delete-btn", function() {
+    var row = $(this).closest("tr");
+
+    // Remove the row from the grid data array
+    gridData.splice(row.index(), 1);
+
+    // Refresh the grid view
+    refreshGrid();
+  });
+});
+
+
+
+  </script>
+</body>
+</html>

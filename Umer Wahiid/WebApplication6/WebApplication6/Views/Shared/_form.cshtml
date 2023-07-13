@@ -1,0 +1,66 @@
+﻿@model WebApplication6.Models.formVM
+
+
+
+<h4>Employee</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form id="myForm" method="POST">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Emp.EmpName" class="control-label"></label>
+                <input asp-for="Emp.EmpName" class="form-control" />
+                <span asp-validation-for="Emp.EmpName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Emp.Email" class="control-label"></label>
+                <input asp-for="Emp.Email" class="form-control" />
+                <span asp-validation-for="Emp.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Emp.ContNum" class="control-label"></label>
+                <input asp-for="Emp.ContNum" class="form-control" />
+                <span asp-validation-for="Emp.ContNum" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Emp.Salary" class="control-label"></label>
+                <input asp-for="Emp.Salary" class="form-control" />
+                <span asp-validation-for="Emp.Salary" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('#myForm').submit(function(event) {
+    event.preventDefault();
+
+    var formData = $(this).serialize();
+
+    $.post({
+        url: '@Url.Action("Create", "Employees")',
+        async:true,
+      data: formData,
+      success: function(response) {
+          console.log("Form submission Success: " + response.message);
+          window.location.href = '@Url.Action("Index", "Employees")';
+      },
+      error: function(xhr, status, error) {
+          console.log("An error occurred during form submission: " + error);
+      }
+    });
+  });
+});
+</script>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

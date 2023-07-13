@@ -1,0 +1,69 @@
+﻿@*@model IEnumerable<WebApplication6.Models.Employee>*@
+@model WebApplication6.Models.formVM
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<button id="getDataButton">Get Employees</button>
+<table id="customerTable" class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Emp.EmpName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Emp.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Emp.ContNum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Emp.Salary)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+@Html.Partial("_form")
+
+
+@section Scripts {
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            //$("#getDataButton").click(function () {
+            $.get("/Employees/GetEmployee", function (data) {
+                console.log(data);
+
+                var tbody = $("#customerTable tbody");
+                tbody.empty();
+
+                $.each(data, function (index, item) {
+                    console.log(item);
+                    var row = $("<tr></tr>");
+                    $("<td></td>").text(item.empName).appendTo(row);
+                    $("<td></td>").text(item.email).appendTo(row);
+                    $("<td></td>").text(item.contNum).appendTo(row);
+                    $("<td></td>").text(item.salary).appendTo(row);
+                    $("<td></td>").html('<a href="/Employees/Edit/' + item.employeeId + '">Edit</a> | <a href="/Employees/Details/' + item.employeeId + '">Details</a> | <a href="/Employees/Delete/' + item.employeeId + '">Delete</a>').appendTo(row);
+                    row.appendTo(tbody);
+                });
+            });
+        });
+
+
+
+
+    </script>
+}
